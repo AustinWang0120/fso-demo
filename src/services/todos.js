@@ -15,6 +15,10 @@ const update = (id, newTodoObject) => {
         .then((response) => response.data)
 }
 
-const methods = { getAll, create, update }
+const remove = (id) => {
+    return axios.delete(`${baseUrl}/${id}`)
+}
+
+const methods = { getAll, create, update, remove }
 
 export default methods

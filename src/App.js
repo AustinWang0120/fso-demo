@@ -40,26 +40,56 @@ const App = () => {
         })
     }
 
+    const handleUpdate = (id, newTodo) => {
+        todoService
+            .update(id, newTodo)
+            .then((returnedTodo) =>
+                setTodos(
+                    todos.map((todo) => (todo.id === id ? returnedTodo : todo))
+                )
+            )
+    }
+
+    const handleRemove = (id) => () => {
+        todoService
+            .remove(id)
+            .then(() => setTodos(todos.filter((todo) => todo.id !== id)))
+    }
+
     const todosToShow = showAll
         ? todos
         : todos.filter((todo) => !todo.completed)
 
     return (
-        <div>
+        <div className="container">
             <h1>Todo List</h1>
-            <form onSubmit={addTodo}>
-                <input value={newTodoContent} onChange={handleNewTodoChange} />
-                <button type="submit">Add</button>
-                <button type="button" onClick={handleShowClick}>
+
+            <form className="form" onSubmit={addTodo}>
+                <input
+                    className="form__input"
+                    value={newTodoContent}
+                    onChange={handleNewTodoChange}
+                />
+                <button className="form__submit" type="submit">
+                    Add
+                </button>
+                <button
+                    className="form__button"
+                    type="button"
+                    onClick={handleShowClick}
+                >
                     Show {showAll ? "uncompleted" : "all"}
                 </button>
             </form>
-            <ul style={{ listStyle: "none" }}>
+
+            <ul className="list">
                 {todosToShow.map((todo) => (
                     <Todo
                         key={todo.id}
                         todo={todo}
-                        handleToggle={handleToggle(todo.id)}
+                        handleToggle={handleToggle}
+                        handleRemove={handleRemove}
+                        handleUpdate={handleUpdate}
                     />
                 ))}
             </ul>
