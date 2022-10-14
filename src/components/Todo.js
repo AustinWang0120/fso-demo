@@ -7,7 +7,6 @@ const Todo = ({ todo, handleToggle, handleRemove, handleUpdate }) => {
     const handleContentChange = (event) => setNewContent(event.target.value)
 
     const handleSave = () => {
-        console.log(newContent)
         handleUpdate(todo.id, { ...todo, content: newContent })
         setIsEdit(!isEdit)
     }

@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react"
 import todoService from "./services/todos"
+import Filter from "./components/Filter"
+import Form from "./components/Form"
 import Todo from "./components/Todo"
 
 const App = () => {
     const [todos, setTodos] = useState([])
     const [newTodoContent, setNewTodoContent] = useState("")
+    const [keyword, setKeyword] = useState("")
     const [showAll, setShowAll] = useState(true)
 
     useEffect(() => {
@@ -26,6 +29,8 @@ const App = () => {
     }
 
     const handleNewTodoChange = (event) => setNewTodoContent(event.target.value)
+
+    const handleKeywordChange = (event) => setKeyword(event.target.value)
 
     const handleShowClick = () => setShowAll(!showAll)
 
@@ -57,30 +62,29 @@ const App = () => {
     }
 
     const todosToShow = showAll
-        ? todos
-        : todos.filter((todo) => !todo.completed)
+        ? todos.filter((todo) => todo.content.toLowerCase().includes(keyword))
+        : todos.filter(
+              (todo) =>
+                  !todo.completed &&
+                  todo.content.toLowerCase().includes(keyword)
+          )
 
     return (
         <div className="container">
             <h1>Todo List</h1>
 
-            <form className="form" onSubmit={addTodo}>
-                <input
-                    className="form__input"
-                    value={newTodoContent}
-                    onChange={handleNewTodoChange}
-                />
-                <button className="form__submit" type="submit">
-                    Add
-                </button>
-                <button
-                    className="form__button"
-                    type="button"
-                    onClick={handleShowClick}
-                >
-                    Show {showAll ? "uncompleted" : "all"}
-                </button>
-            </form>
+            <Filter
+                keyword={keyword}
+                handleKeywordChange={handleKeywordChange}
+                handleShowClick={handleShowClick}
+                showAll={showAll}
+            />
+
+            <Form
+                newTodoContent={newTodoContent}
+                handleNewTodoChange={handleNewTodoChange}
+                addTodo={addTodo}
+            />
 
             <ul className="list">
                 {todosToShow.map((todo) => (
