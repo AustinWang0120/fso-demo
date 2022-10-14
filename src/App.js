@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import axios from "axios"
+import todoService from "./services/todos"
 import Todo from "./components/Todo"
 
 const App = () => {
@@ -8,10 +8,7 @@ const App = () => {
     const [showAll, setShowAll] = useState(true)
 
     useEffect(() => {
-        axios
-            .get("http://localhost:3001/todos")
-            .then((response) => response.data)
-            .then((todos) => setTodos(todos))
+        todoService.getAll().then((initialTodos) => setTodos(initialTodos))
     }, [])
 
     const addTodo = (event) => {
@@ -22,13 +19,26 @@ const App = () => {
             completed: false,
             id: todos.length + 1,
         }
-        setTodos(todos.concat(newTodoObject))
-        setNewTodoContent("")
+        todoService.create(newTodoObject).then((returnedTodo) => {
+            setTodos(todos.concat(returnedTodo))
+            setNewTodoContent("")
+        })
     }
 
     const handleNewTodoChange = (event) => setNewTodoContent(event.target.value)
 
     const handleShowClick = () => setShowAll(!showAll)
+
+    const handleToggle = (id) => () => {
+        const theTodo = todos.find((todo) => todo.id === id)
+        const changedTodo = { ...theTodo, completed: !theTodo.completed }
+
+        todoService.update(id, changedTodo).then((returnedTodo) => {
+            setTodos(
+                todos.map((todo) => (todo.id === id ? returnedTodo : todo))
+            )
+        })
+    }
 
     const todosToShow = showAll
         ? todos
@@ -44,9 +54,13 @@ const App = () => {
                     Show {showAll ? "uncompleted" : "all"}
                 </button>
             </form>
-            <ul>
+            <ul style={{ listStyle: "none" }}>
                 {todosToShow.map((todo) => (
-                    <Todo key={todo.id} todo={todo} />
+                    <Todo
+                        key={todo.id}
+                        todo={todo}
+                        handleToggle={handleToggle(todo.id)}
+                    />
                 ))}
             </ul>
         </div>
