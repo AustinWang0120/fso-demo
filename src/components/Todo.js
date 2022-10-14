@@ -11,17 +11,20 @@ const Todo = ({ todo, handleToggle, handleRemove, handleUpdate }) => {
         setIsEdit(!isEdit)
     }
 
+    const handleCancel = () => setIsEdit(!isEdit)
+
     if (isEdit) {
         return (
-            <li className={"list__element"}>
+            <div className={"list__element"}>
                 <input value={newContent} onChange={handleContentChange} />
                 <button onClick={handleSave}>Update</button>
-            </li>
+                <button onClick={handleCancel}>Cancel</button>
+            </div>
         )
     }
 
     return (
-        <li className={"list__element"}>
+        <div className={"list__element"}>
             <input
                 type="checkbox"
                 id={todo.id}
@@ -37,7 +40,7 @@ const Todo = ({ todo, handleToggle, handleRemove, handleUpdate }) => {
             </label>
             <button onClick={() => setIsEdit(!isEdit)}>Edit</button>
             <button onClick={handleRemove(todo.id)}>Delete</button>
-        </li>
+        </div>
     )
 }
 

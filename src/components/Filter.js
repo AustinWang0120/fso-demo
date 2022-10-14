@@ -1,10 +1,14 @@
 const Filter = ({ keyword, handleKeywordChange, handleShowClick, showAll }) => {
     return (
-        <div>
+        <div className="filter">
             <h3>Filter</h3>
-            <input value={keyword} onChange={handleKeywordChange} />
+            <input
+                className="filter__input"
+                value={keyword}
+                onChange={handleKeywordChange}
+            />
             <button
-                className="form__button"
+                className="filter__button"
                 type="button"
                 onClick={handleShowClick}
             >

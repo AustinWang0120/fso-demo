@@ -71,32 +71,38 @@ const App = () => {
 
     return (
         <div className="container">
-            <h1>Todo List</h1>
+            <header>
+                <h1>Todo List</h1>
 
-            <Filter
-                keyword={keyword}
-                handleKeywordChange={handleKeywordChange}
-                handleShowClick={handleShowClick}
-                showAll={showAll}
-            />
+                <Filter
+                    keyword={keyword}
+                    handleKeywordChange={handleKeywordChange}
+                    handleShowClick={handleShowClick}
+                    showAll={showAll}
+                />
 
-            <Form
-                newTodoContent={newTodoContent}
-                handleNewTodoChange={handleNewTodoChange}
-                addTodo={addTodo}
-            />
+                <Form
+                    newTodoContent={newTodoContent}
+                    handleNewTodoChange={handleNewTodoChange}
+                    addTodo={addTodo}
+                />
+            </header>
 
-            <ul className="list">
-                {todosToShow.map((todo) => (
-                    <Todo
-                        key={todo.id}
-                        todo={todo}
-                        handleToggle={handleToggle}
-                        handleRemove={handleRemove}
-                        handleUpdate={handleUpdate}
-                    />
-                ))}
-            </ul>
+            <main>
+                <section>
+                    <div className="list">
+                        {todosToShow.map((todo) => (
+                            <Todo
+                                key={todo.id}
+                                todo={todo}
+                                handleToggle={handleToggle}
+                                handleRemove={handleRemove}
+                                handleUpdate={handleUpdate}
+                            />
+                        ))}
+                    </div>
+                </section>
+            </main>
         </div>
     )
 }
