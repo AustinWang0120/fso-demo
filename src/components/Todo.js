@@ -33,7 +33,9 @@ const Todo = ({ todo, handleToggle, handleRemove, handleUpdate }) => {
                 onClick={handleToggle(todo.id)}
             />
             <label
-                className={`${todo.completed ? "list__label--completed" : ""}`}
+                className={`list__label ${
+                    todo.completed ? "list__label--completed" : ""
+                }`}
                 htmlFor={todo.id}
             >
                 {todo.content}
